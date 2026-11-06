@@ -1,0 +1,8 @@
+# NeoCatCraftLauncher - Python 后端依赖
+# 安装方式（清华 PyPI 镜像）:
+#   .runtime\python\python.exe -m pip install -r backend\requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+fastapi>=0.115.0
+uvicorn>=0.30.0
+httpx>=0.27.0
+minecraft-launcher-lib==8.0
+mcauth3==1.1.0

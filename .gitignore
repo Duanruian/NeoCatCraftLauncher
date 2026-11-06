@@ -1,0 +1,44 @@
+# Dependencies and local runtimes
+node_modules/
+.runtime/
+.runtime-*/
+.test-*/
+.key-check-config/
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Frontend and packaging output
+frontend/dist/
+build/
+dist/
+release/
+coverage/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.log
+*.part
+
+# Test and editor temporary files
+/tmp*/
+/.test-tmp/
+/.test-runtime/
+/.runtime-test-dir/
+/.vscode/
+/.idea/
+/.git-upload/
+.DS_Store
+Thumbs.db
+
+# Accidental output file in the project root
+/\$null

@@ -1,0 +1,3193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#31bfe9">
+  <meta name="description" content="NeoCatCraftLauncher 官方网站。轻快、可靠的 Minecraft 启动器，支持多实例、正版登录、皮肤预览、模组加载器与内容下载。">
+  <title>NeoCatCraftLauncher · 官方网站</title>
+  <style>
+    :root {
+      --bg: #ecfbff;
+      --bg-deep: #dff5fb;
+      --paper: #ffffff;
+      --paper-soft: rgba(255, 255, 255, 0.76);
+      --ink: #173844;
+      --ink-soft: #4d6974;
+      --muted: #748d96;
+      --line: rgba(32, 125, 151, 0.14);
+      --line-strong: rgba(32, 125, 151, 0.25);
+      --cyan: #27bde8;
+      --blue: #398cf3;
+      --cyan-deep: #087b9e;
+      --cyan-soft: #e1f8fd;
+      --orange: #ff9e43;
+      --orange-soft: #fff1dd;
+      --yellow: #ffd968;
+      --green: #42c990;
+      --danger: #ea6472;
+      --shadow: 0 20px 52px rgba(35, 116, 144, 0.14);
+      --shadow-soft: 0 10px 28px rgba(35, 116, 144, 0.11);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius: 15px;
+      --font: "Segoe UI Variable Text", "Microsoft YaHei UI", "PingFang SC", "Noto Sans SC", sans-serif;
+      --display: "Segoe UI Variable Display", "Microsoft YaHei UI", "PingFang SC", sans-serif;
+      --mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 84% 4%, rgba(255, 201, 96, 0.25), transparent 23rem),
+        radial-gradient(circle at 4% 18%, rgba(50, 193, 232, 0.18), transparent 27rem),
+        linear-gradient(150deg, var(--bg), #f7fdff 56%, var(--bg-deep));
+      font: 15px/1.7 var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: 0.42;
+      background-image:
+        linear-gradient(rgba(47, 145, 170, 0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(47, 145, 170, 0.09) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(to bottom, black, transparent 72%);
+    }
+
+    ::selection {
+      color: #042b37;
+      background: #8ce9fb;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      color: inherit;
+      font: inherit;
+    }
+
+    img,
+    svg {
+      display: block;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      padding: 10px 16px;
+      border-radius: 10px;
+      color: white;
+      background: var(--ink);
+      transform: translateY(-140%);
+    }
+
+    .skip-link:focus {
+      transform: none;
+    }
+
+    :focus-visible {
+      outline: 3px solid rgba(39, 189, 232, 0.5);
+      outline-offset: 3px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 12px 0;
+      transition: padding 0.2s ease;
+    }
+
+    .header-shell {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      min-height: 64px;
+      padding: 10px 12px 10px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.75);
+      box-shadow: 0 8px 24px rgba(39, 113, 138, 0.08);
+      backdrop-filter: blur(22px) saturate(145%);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .site-header.is-scrolled .header-shell {
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 12px 32px rgba(39, 113, 138, 0.14);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: max-content;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      overflow: hidden;
+      border: 2px solid white;
+      border-radius: 13px;
+      background: linear-gradient(145deg, var(--cyan), var(--blue));
+      box-shadow: 0 6px 15px rgba(38, 148, 194, 0.25);
+    }
+
+    .brand-mark svg {
+      width: 34px;
+      height: 34px;
+    }
+
+    .brand-copy {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+
+    .brand-copy strong {
+      font-family: var(--display);
+      font-size: 16px;
+      font-weight: 820;
+      letter-spacing: -0.025em;
+    }
+
+    .brand-copy small {
+      margin-top: 4px;
+      color: var(--cyan-deep);
+      font-size: 8px;
+      font-weight: 850;
+      letter-spacing: 0.2em;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: auto;
+    }
+
+    .main-nav a {
+      padding: 8px 12px;
+      border-radius: 10px;
+      color: var(--ink-soft);
+      font-size: 13px;
+      font-weight: 620;
+      transition: color 0.18s ease, background 0.18s ease;
+    }
+
+    .main-nav a:hover {
+      color: var(--ink);
+      background: var(--cyan-soft);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 45px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 13px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 720;
+      white-space: nowrap;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button:active {
+      transform: translateY(1px);
+    }
+
+    .button svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+    }
+
+    .button--primary {
+      color: #072f3b;
+      background: linear-gradient(135deg, #6fe5fa, #4fcbf1 48%, #67baf5);
+      box-shadow:
+        0 6px 0 rgba(28, 137, 172, 0.2),
+        0 12px 26px rgba(44, 168, 209, 0.23);
+    }
+
+    .button--primary:hover {
+      box-shadow:
+        0 8px 0 rgba(28, 137, 172, 0.18),
+        0 16px 32px rgba(44, 168, 209, 0.26);
+    }
+
+    .button--ghost {
+      border: 1px solid var(--line-strong);
+      color: var(--ink-soft);
+      background: rgba(255, 255, 255, 0.62);
+      box-shadow: none;
+    }
+
+    .button--ghost:hover {
+      color: var(--ink);
+      background: white;
+    }
+
+    .header-download {
+      min-height: 42px;
+      padding-inline: 17px;
+    }
+
+    .menu-button {
+      display: none;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+    }
+
+    .menu-button span,
+    .menu-button::before,
+    .menu-button::after {
+      display: block;
+      width: 17px;
+      height: 2px;
+      margin: 4px auto;
+      border-radius: 2px;
+      background: var(--ink);
+      content: "";
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .hero {
+      position: relative;
+      padding: 72px 0 90px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -8%;
+      bottom: 0;
+      width: 48rem;
+      height: 25rem;
+      z-index: -1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(52, 188, 224, 0.17), transparent 69%);
+      filter: blur(18px);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.91fr) minmax(500px, 1.09fr);
+      align-items: center;
+      gap: clamp(34px, 6vw, 78px);
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 29px;
+      padding: 0 11px;
+      border: 1px solid rgba(39, 151, 183, 0.18);
+      border-radius: 999px;
+      color: var(--ink-soft);
+      background: rgba(255, 255, 255, 0.66);
+      box-shadow: 0 4px 12px rgba(41, 128, 155, 0.06);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .status-pill i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(66, 201, 144, 0.13);
+      animation: pulse 2.2s infinite;
+    }
+
+    .status-pill span {
+      color: var(--cyan-deep);
+    }
+
+    @keyframes pulse {
+      50% {
+        box-shadow: 0 0 0 7px rgba(66, 201, 144, 0);
+      }
+    }
+
+    .hero h1 {
+      max-width: 650px;
+      margin: 23px 0 18px;
+      font-family: var(--display);
+      font-size: clamp(44px, 5.4vw, 72px);
+      font-weight: 850;
+      letter-spacing: -0.065em;
+      line-height: 1.03;
+    }
+
+    .hero h1 .accent {
+      position: relative;
+      display: inline-block;
+      color: #1399bf;
+      z-index: 0;
+    }
+
+    .hero h1 .accent::after {
+      content: "";
+      position: absolute;
+      left: -3%;
+      right: -3%;
+      bottom: 5%;
+      z-index: -1;
+      height: 22%;
+      border-radius: 6px;
+      background: linear-gradient(90deg, rgba(255, 213, 104, 0.78), rgba(255, 158, 67, 0.52));
+      transform: rotate(-1.3deg);
+    }
+
+    .hero-lead {
+      max-width: 570px;
+      color: var(--ink-soft);
+      font-size: clamp(15px, 1.4vw, 17px);
+      line-height: 1.85;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 11px;
+      margin-top: 30px;
+    }
+
+    .hero-actions .button {
+      min-height: 50px;
+      padding-inline: 23px;
+    }
+
+    .download-note {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 9px 14px;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .download-note span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .download-note svg {
+      width: 13px;
+      height: 13px;
+      color: var(--green);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 9px;
+      margin-top: 35px;
+    }
+
+    .hero-stat {
+      min-width: 107px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.58);
+      box-shadow: 0 7px 20px rgba(37, 119, 144, 0.06);
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 820;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-stat span {
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-width: 0;
+      perspective: 1200px;
+    }
+
+    .visual-halo {
+      position: absolute;
+      inset: 6% 0 0 5%;
+      z-index: -1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 48% 36%, rgba(255, 255, 255, 0.95), transparent 30%),
+        radial-gradient(circle, rgba(42, 192, 231, 0.23), transparent 68%);
+      filter: blur(4px);
+      transform: rotate(-8deg);
+    }
+
+    .launcher-frame {
+      position: relative;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      border-radius: 27px;
+      background: rgba(251, 254, 255, 0.86);
+      box-shadow:
+        0 26px 0 rgba(57, 142, 166, 0.09),
+        0 48px 90px rgba(39, 126, 153, 0.21);
+      transform: rotateY(-4deg) rotateX(2deg);
+      transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .hero-visual:hover .launcher-frame {
+      transform: rotateY(0deg) rotateX(0deg) translateY(-4px);
+    }
+
+    .window-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 45px;
+      padding: 0 12px 0 14px;
+      border-bottom: 1px solid rgba(37, 122, 145, 0.11);
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .mini-logo {
+      display: grid;
+      width: 26px;
+      height: 26px;
+      place-items: center;
+      border-radius: 8px;
+      color: white;
+      background: linear-gradient(145deg, var(--cyan), var(--blue));
+      font-size: 8px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .window-name {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+
+    .window-name strong {
+      font-size: 9px;
+      font-weight: 760;
+    }
+
+    .window-name small {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 5.5px;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 5px;
+      margin-left: auto;
+    }
+
+    .window-dots i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #d7e9ee;
+    }
+
+    .window-dots i:last-child {
+      background: #ff9b9f;
+    }
+
+    .launcher-body {
+      display: grid;
+      grid-template-columns: 146px minmax(0, 1fr);
+      min-height: 390px;
+      background:
+        linear-gradient(145deg, rgba(232, 249, 253, 0.82), rgba(248, 253, 255, 0.96));
+    }
+
+    .mock-sidebar {
+      padding: 11px 9px;
+      border-right: 1px solid rgba(37, 122, 145, 0.1);
+      background: rgba(255, 255, 255, 0.43);
+    }
+
+    .mock-player {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px;
+      border: 1px solid rgba(37, 122, 145, 0.11);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.74);
+    }
+
+    .mock-avatar {
+      display: grid;
+      width: 27px;
+      height: 27px;
+      flex: 0 0 auto;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 8px;
+      background: linear-gradient(145deg, #53cae9, #368ef1);
+    }
+
+    .mock-avatar svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .mock-player-copy {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .mock-player-copy strong {
+      overflow: hidden;
+      font-size: 7.5px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .mock-player-copy small {
+      margin-top: 2px;
+      color: var(--cyan-deep);
+      font-size: 5.5px;
+      font-weight: 700;
+    }
+
+    .mock-section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 15px 3px 7px;
+      color: var(--ink-soft);
+      font-size: 7px;
+      font-weight: 760;
+    }
+
+    .mock-section-title i {
+      width: 14px;
+      height: 14px;
+      border-radius: 5px;
+      background: var(--cyan-soft);
+    }
+
+    .mock-instance {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+      padding: 6px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      background: rgba(255, 255, 255, 0.46);
+    }
+
+    .mock-instance.active {
+      border-color: rgba(46, 173, 210, 0.27);
+      background: rgba(218, 247, 253, 0.85);
+    }
+
+    .mock-instance-icon {
+      display: grid;
+      width: 24px;
+      height: 24px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 1px solid rgba(42, 132, 157, 0.13);
+      border-radius: 7px;
+      background: white;
+    }
+
+    .mock-instance-icon svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .mock-instance-copy {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .mock-instance-copy strong {
+      overflow: hidden;
+      font-size: 6.8px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .mock-instance-copy small {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 5.3px;
+    }
+
+    .mock-add {
+      display: grid;
+      width: 100%;
+      height: 25px;
+      place-items: center;
+      border: 1px dashed rgba(39, 166, 201, 0.27);
+      border-radius: 8px;
+      color: var(--cyan-deep);
+      background: rgba(224, 249, 254, 0.65);
+      font-size: 7px;
+    }
+
+    .mock-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-top: 21px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .mock-nav span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 25px;
+      padding: 0 7px;
+      border-radius: 7px;
+      color: var(--muted);
+      font-size: 6.8px;
+    }
+
+    .mock-nav span:first-child {
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .mock-nav b {
+      display: grid;
+      width: 13px;
+      height: 13px;
+      place-items: center;
+      border-radius: 4px;
+      background: var(--cyan-soft);
+      font-size: 7px;
+    }
+
+    .mock-main {
+      min-width: 0;
+      padding: 17px 18px 14px;
+    }
+
+    .mock-main-head {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 13px;
+    }
+
+    .mock-instance-badge {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 2px solid white;
+      border-radius: 11px;
+      background: white;
+      box-shadow: 0 4px 12px rgba(32, 117, 143, 0.12);
+    }
+
+    .mock-instance-badge svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .mock-main-title {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      line-height: 1.15;
+    }
+
+    .mock-main-title small {
+      color: var(--cyan-deep);
+      font-size: 4.8px;
+      font-weight: 850;
+      letter-spacing: 0.15em;
+    }
+
+    .mock-main-title strong {
+      margin-top: 2px;
+      font-family: var(--display);
+      font-size: 12px;
+      font-weight: 820;
+      letter-spacing: -0.03em;
+    }
+
+    .mock-main-head > span {
+      margin-left: auto;
+      padding: 4px 7px;
+      border-radius: 999px;
+      color: var(--cyan-deep);
+      background: var(--cyan-soft);
+      font-size: 5.5px;
+      font-weight: 700;
+    }
+
+    .mock-launch-card {
+      position: relative;
+      min-height: 155px;
+      padding: 17px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.82);
+      border-radius: 17px;
+      background:
+        linear-gradient(110deg, rgba(166, 237, 251, 0.95), rgba(95, 209, 242, 0.95) 55%, rgba(79, 182, 235, 0.95));
+      box-shadow: 0 8px 20px rgba(50, 165, 199, 0.18);
+    }
+
+    .mock-launch-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 60%;
+    }
+
+    .mock-launch-copy > small {
+      color: rgba(17, 80, 98, 0.65);
+      font-size: 5px;
+      font-weight: 820;
+      letter-spacing: 0.18em;
+    }
+
+    .mock-launch-copy h3 {
+      margin: 6px 0 5px;
+      font-family: var(--display);
+      font-size: 20px;
+      font-weight: 850;
+      letter-spacing: -0.05em;
+      line-height: 1.05;
+    }
+
+    .mock-launch-copy p {
+      color: rgba(19, 73, 87, 0.68);
+      font-size: 6px;
+    }
+
+    .mock-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 12px;
+    }
+
+    .mock-chips span {
+      padding: 3px 6px;
+      border: 1px solid rgba(255, 255, 255, 0.58);
+      border-radius: 999px;
+      color: #24596a;
+      background: rgba(255, 255, 255, 0.42);
+      font-size: 5px;
+      font-weight: 650;
+    }
+
+    .mock-play {
+      position: absolute;
+      right: 14px;
+      bottom: 15px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 11px;
+      color: #17343d;
+      background: linear-gradient(135deg, #fff7d1, #ffd45f);
+      box-shadow: 0 5px 0 rgba(178, 111, 28, 0.18);
+    }
+
+    .mock-play i {
+      display: grid;
+      width: 22px;
+      height: 22px;
+      place-items: center;
+      border-radius: 7px;
+      color: white;
+      background: var(--orange);
+      font-size: 8px;
+      font-style: normal;
+    }
+
+    .mock-play span {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .mock-play strong {
+      font-size: 7px;
+    }
+
+    .mock-play small {
+      margin-top: 2px;
+      color: rgba(45, 63, 67, 0.56);
+      font-size: 4.5px;
+    }
+
+    .pixel-art {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .pixel-cloud {
+      position: absolute;
+      width: 42px;
+      height: 12px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.38);
+    }
+
+    .pixel-cloud::before,
+    .pixel-cloud::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      border-radius: 2px;
+      background: inherit;
+    }
+
+    .pixel-cloud::before {
+      left: 7px;
+      width: 17px;
+      height: 19px;
+    }
+
+    .pixel-cloud::after {
+      right: 7px;
+      width: 13px;
+      height: 22px;
+    }
+
+    .pixel-cloud.one {
+      top: 17px;
+      right: 17%;
+    }
+
+    .pixel-cloud.two {
+      top: 48px;
+      right: 39%;
+      transform: scale(0.66);
+    }
+
+    .pixel-hill {
+      position: absolute;
+      right: -5%;
+      bottom: -41px;
+      width: 190px;
+      height: 105px;
+      border-radius: 50% 50% 0 0;
+      background: rgba(42, 140, 105, 0.17);
+      transform: rotate(-6deg);
+    }
+
+    .pixel-grass {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 270px;
+      height: 29px;
+      opacity: 0.2;
+      background: rgba(34, 121, 89, 0.8);
+      clip-path: polygon(0 100%, 0 51%, 8% 51%, 8% 30%, 15% 30%, 15% 57%, 25% 57%, 25% 39%, 34% 39%, 34% 59%, 47% 59%, 47% 25%, 56% 25%, 56% 51%, 67% 51%, 67% 33%, 76% 33%, 76% 55%, 88% 55%, 88% 36%, 96% 36%, 96% 61%, 100% 61%, 100% 100%);
+    }
+
+    .mock-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .mock-stat {
+      padding: 9px;
+      border: 1px solid rgba(37, 122, 145, 0.1);
+      border-radius: 11px;
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    .mock-stat small {
+      display: block;
+      color: var(--muted);
+      font-size: 4.8px;
+      font-weight: 720;
+      letter-spacing: 0.12em;
+    }
+
+    .mock-stat strong {
+      display: block;
+      margin-top: 2px;
+      font-family: var(--display);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .mock-stat p {
+      color: var(--muted);
+      font-size: 5px;
+    }
+
+    .mock-recent {
+      margin-top: 10px;
+      padding: 10px 11px;
+      border: 1px solid rgba(37, 122, 145, 0.1);
+      border-radius: 11px;
+      background: rgba(255, 255, 255, 0.58);
+    }
+
+    .mock-recent-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 7px;
+      font-size: 6px;
+      font-weight: 760;
+    }
+
+    .mock-recent-head span:last-child {
+      color: var(--cyan-deep);
+      font-size: 5px;
+    }
+
+    .mock-mod-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 0;
+      border-top: 1px solid rgba(37, 122, 145, 0.07);
+    }
+
+    .mock-mod-icon {
+      width: 17px;
+      height: 17px;
+      border-radius: 5px;
+      background: linear-gradient(145deg, #8be1f0, #62a8e9);
+    }
+
+    .mock-mod-icon.orange {
+      background: linear-gradient(145deg, #ffd578, #f1a54c);
+    }
+
+    .mock-mod-row strong {
+      display: block;
+      font-size: 5.3px;
+    }
+
+    .mock-mod-row small {
+      display: block;
+      margin-top: 1px;
+      color: var(--muted);
+      font-size: 4.5px;
+    }
+
+    .mock-mod-row em {
+      margin-left: auto;
+      padding: 2px 5px;
+      border-radius: 999px;
+      color: var(--green);
+      background: rgba(66, 201, 144, 0.11);
+      font-size: 4.5px;
+      font-style: normal;
+    }
+
+    .floating-chip {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 12px 30px rgba(33, 113, 138, 0.16);
+      backdrop-filter: blur(10px);
+      animation: float 4.4s ease-in-out infinite;
+    }
+
+    .floating-chip svg {
+      width: 18px;
+      height: 18px;
+      color: var(--cyan-deep);
+    }
+
+    .floating-chip div {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .floating-chip strong {
+      font-size: 9px;
+    }
+
+    .floating-chip small {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 7px;
+    }
+
+    .floating-chip.skin {
+      right: -23px;
+      top: 96px;
+    }
+
+    .floating-chip.safe {
+      left: -28px;
+      bottom: 56px;
+      animation-delay: -2.1s;
+    }
+
+    .floating-chip.safe svg {
+      color: var(--orange);
+    }
+
+    @keyframes float {
+      50% {
+        transform: translateY(-7px);
+      }
+    }
+
+    .release-strip {
+      position: relative;
+      z-index: 2;
+      margin-top: -38px;
+    }
+
+    .release-inner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 17px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(16px);
+    }
+
+    .release-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 9px;
+      border-radius: 8px;
+      color: var(--cyan-deep);
+      background: var(--cyan-soft);
+      font-size: 9px;
+      font-weight: 820;
+      letter-spacing: 0.04em;
+    }
+
+    .release-tag i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+    }
+
+    .release-inner p {
+      flex: 1;
+      color: var(--ink-soft);
+      font-size: 11px;
+    }
+
+    .release-inner p strong {
+      color: var(--ink);
+    }
+
+    .release-inner a {
+      color: var(--cyan-deep);
+      font-size: 10px;
+      font-weight: 720;
+    }
+
+    .section {
+      padding: 104px 0;
+    }
+
+    .section-heading {
+      max-width: 690px;
+      margin-bottom: 42px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--cyan-deep);
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--cyan);
+    }
+
+    .section-heading h2 {
+      margin: 11px 0 12px;
+      font-family: var(--display);
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 840;
+      letter-spacing: -0.055em;
+      line-height: 1.1;
+    }
+
+    .section-heading p {
+      max-width: 610px;
+      color: var(--ink-soft);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+
+    .feature-card {
+      position: relative;
+      grid-column: span 4;
+      min-height: 230px;
+      padding: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 38px rgba(33, 113, 138, 0.14);
+    }
+
+    .feature-card.wide {
+      grid-column: span 6;
+    }
+
+    .features-grid > .feature-card:nth-child(n + 3) {
+      grid-column: span 3;
+    }
+
+    .feature-card.accent-card {
+      color: #eafcff;
+      background:
+        radial-gradient(circle at 90% 5%, rgba(108, 222, 247, 0.28), transparent 45%),
+        linear-gradient(145deg, #153b49, #102c36);
+    }
+
+    .feature-card.accent-card::after {
+      content: "";
+      position: absolute;
+      right: -42px;
+      bottom: -64px;
+      width: 190px;
+      height: 190px;
+      border: 1px solid rgba(125, 224, 245, 0.18);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 28px rgba(125, 224, 245, 0.05),
+        0 0 0 57px rgba(125, 224, 245, 0.03);
+    }
+
+    .feature-icon {
+      display: grid;
+      width: 46px;
+      height: 46px;
+      place-items: center;
+      border-radius: 14px;
+      color: var(--cyan-deep);
+      background: var(--cyan-soft);
+    }
+
+    .feature-icon.orange {
+      color: #9d5b12;
+      background: var(--orange-soft);
+    }
+
+    .feature-icon.green {
+      color: #167c53;
+      background: rgba(66, 201, 144, 0.13);
+    }
+
+    .feature-card.accent-card .feature-icon {
+      color: #102e39;
+      background: linear-gradient(145deg, #78e3f8, #55b8f0);
+    }
+
+    .feature-icon svg {
+      width: 23px;
+      height: 23px;
+    }
+
+    .feature-card h3 {
+      margin: 20px 0 8px;
+      font-family: var(--display);
+      font-size: 19px;
+      font-weight: 780;
+      letter-spacing: -0.025em;
+    }
+
+    .feature-card p {
+      max-width: 410px;
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.75;
+    }
+
+    .feature-card.accent-card p {
+      color: rgba(219, 246, 252, 0.7);
+    }
+
+    .feature-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 18px;
+    }
+
+    .feature-tags span {
+      padding: 4px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.48);
+      font-size: 8px;
+      font-weight: 650;
+    }
+
+    .accent-card .feature-tags span {
+      border-color: rgba(195, 240, 249, 0.14);
+      color: rgba(222, 248, 254, 0.73);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .skin-demo {
+      position: absolute;
+      right: 24px;
+      bottom: 18px;
+      width: 92px;
+      height: 125px;
+      opacity: 0.88;
+    }
+
+    .skin-demo .head,
+    .skin-demo .body,
+    .skin-demo .arm,
+    .skin-demo .leg {
+      position: absolute;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: inset -8px 0 rgba(7, 37, 48, 0.14);
+    }
+
+    .skin-demo .head {
+      top: 0;
+      left: 30px;
+      width: 33px;
+      height: 33px;
+      border-radius: 7px 7px 5px 5px;
+      background:
+        linear-gradient(90deg, transparent 26%, #153a48 26% 38%, transparent 38% 62%, #153a48 62% 74%, transparent 74%),
+        linear-gradient(#66d7ed, #52aee8);
+    }
+
+    .skin-demo .body {
+      top: 34px;
+      left: 30px;
+      width: 33px;
+      height: 47px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #338ec9, #55c6e7);
+    }
+
+    .skin-demo .body::after {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      width: 13px;
+      height: 13px;
+      background: #ffd060;
+      clip-path: polygon(50% 0, 63% 36%, 100% 50%, 63% 64%, 50% 100%, 37% 64%, 0 50%, 37% 36%);
+    }
+
+    .skin-demo .arm,
+    .skin-demo .leg {
+      width: 14px;
+      border-radius: 4px;
+      background: linear-gradient(#5dcbe8, #307fbf);
+    }
+
+    .skin-demo .arm.left {
+      top: 36px;
+      left: 15px;
+      height: 43px;
+      transform: rotate(4deg);
+    }
+
+    .skin-demo .arm.right {
+      top: 36px;
+      right: 15px;
+      height: 43px;
+      transform: rotate(-4deg);
+    }
+
+    .skin-demo .leg.left {
+      top: 80px;
+      left: 30px;
+      height: 41px;
+    }
+
+    .skin-demo .leg.right {
+      top: 80px;
+      left: 49px;
+      height: 41px;
+    }
+
+    .showcase {
+      padding-top: 40px;
+    }
+
+    .showcase-panel {
+      display: grid;
+      grid-template-columns: 0.78fr 1.22fr;
+      gap: 0;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.92);
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: var(--shadow);
+    }
+
+    .showcase-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(28px, 4vw, 48px);
+      background:
+        radial-gradient(circle at 10% 100%, rgba(255, 177, 84, 0.17), transparent 45%),
+        rgba(255, 255, 255, 0.52);
+    }
+
+    .showcase-copy h2 {
+      margin: 12px 0;
+      font-family: var(--display);
+      font-size: clamp(30px, 3.8vw, 44px);
+      font-weight: 840;
+      letter-spacing: -0.055em;
+      line-height: 1.08;
+    }
+
+    .showcase-copy > p {
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .showcase-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 26px;
+    }
+
+    .showcase-tab {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      width: 100%;
+      padding: 10px 11px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      color: var(--ink-soft);
+      background: transparent;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .showcase-tab:hover {
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    .showcase-tab.active {
+      border-color: rgba(39, 166, 201, 0.18);
+      background: white;
+      box-shadow: 0 6px 16px rgba(35, 116, 144, 0.08);
+    }
+
+    .showcase-tab i {
+      display: grid;
+      width: 29px;
+      height: 29px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 9px;
+      color: var(--cyan-deep);
+      background: var(--cyan-soft);
+      font-size: 11px;
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    .showcase-tab span {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .showcase-tab strong {
+      font-size: 11px;
+    }
+
+    .showcase-tab small {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 8.5px;
+    }
+
+    .showcase-stage {
+      position: relative;
+      min-height: 470px;
+      padding: 28px;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(39, 155, 185, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(39, 155, 185, 0.08) 1px, transparent 1px),
+        linear-gradient(145deg, #e0f8fd, #f4fcfe);
+      background-size: 32px 32px, 32px 32px, auto;
+    }
+
+    .showcase-stage::before {
+      content: "";
+      position: absolute;
+      right: -90px;
+      top: -90px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(255, 204, 103, 0.2);
+      filter: blur(14px);
+    }
+
+    .panel-card {
+      position: relative;
+      z-index: 2;
+      display: none;
+      height: 100%;
+      min-height: 410px;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 21px;
+      background: rgba(255, 255, 255, 0.76);
+      box-shadow: 0 18px 40px rgba(34, 119, 145, 0.13);
+      backdrop-filter: blur(12px);
+    }
+
+    .panel-card.active {
+      display: block;
+      animation: panel-in 0.3s ease both;
+    }
+
+    @keyframes panel-in {
+      from {
+        opacity: 0;
+        transform: translateY(9px);
+      }
+    }
+
+    .panel-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .panel-top-icon {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border-radius: 11px;
+      color: var(--cyan-deep);
+      background: var(--cyan-soft);
+    }
+
+    .panel-top-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .panel-top div {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .panel-top strong {
+      font-size: 12px;
+    }
+
+    .panel-top small {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 8px;
+    }
+
+    .panel-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: var(--muted);
+      background: rgba(240, 251, 254, 0.78);
+      font-size: 9px;
+    }
+
+    .panel-search i {
+      width: 11px;
+      height: 11px;
+      border: 1.5px solid var(--muted);
+      border-radius: 50%;
+    }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      margin-top: 12px;
+    }
+
+    .catalog-item {
+      display: flex;
+      gap: 10px;
+      min-width: 0;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .catalog-icon {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      border-radius: 10px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent),
+        linear-gradient(145deg, #7edcf0, #4aa1e8);
+    }
+
+    .catalog-icon.orange {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent),
+        linear-gradient(145deg, #ffd371, #f09b46);
+    }
+
+    .catalog-icon.purple {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent),
+        linear-gradient(145deg, #bdadf2, #8873e1);
+    }
+
+    .catalog-icon.green {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent),
+        linear-gradient(145deg, #86dfb1, #3dbd7a);
+    }
+
+    .catalog-copy {
+      display: flex;
+      min-width: 0;
+      flex: 1;
+      flex-direction: column;
+      line-height: 1.3;
+    }
+
+    .catalog-copy strong {
+      overflow: hidden;
+      font-size: 9px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .catalog-copy small {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 7px;
+    }
+
+    .catalog-copy span {
+      align-self: flex-start;
+      margin-top: auto;
+      padding: 2px 6px;
+      border-radius: 999px;
+      color: var(--cyan-deep);
+      background: var(--cyan-soft);
+      font-size: 6px;
+      font-weight: 650;
+    }
+
+    .version-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .version-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .version-row > i {
+      width: 33px;
+      height: 33px;
+      flex: 0 0 auto;
+      border-radius: 9px;
+      background: linear-gradient(145deg, #8de5f5, #4db0e9);
+    }
+
+    .version-row:nth-child(2) > i {
+      background: linear-gradient(145deg, #ffc579, #f49543);
+    }
+
+    .version-row:nth-child(3) > i {
+      background: linear-gradient(145deg, #a5e7be, #4ec886);
+    }
+
+    .version-copy {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+
+    .version-copy strong {
+      font-size: 10px;
+    }
+
+    .version-copy small {
+      color: var(--muted);
+      font-size: 7.5px;
+    }
+
+    .version-row button {
+      min-height: 27px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--cyan-deep);
+      background: var(--cyan-soft);
+      font-size: 7.5px;
+      font-weight: 700;
+    }
+
+    .skin-panel-body {
+      display: grid;
+      grid-template-columns: 1fr 0.9fr;
+      align-items: center;
+      gap: 15px;
+      min-height: 310px;
+    }
+
+    .skin-stage {
+      position: relative;
+      display: grid;
+      min-height: 300px;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 17px;
+      background:
+        radial-gradient(circle at center, rgba(99, 215, 239, 0.22), transparent 54%),
+        linear-gradient(145deg, #173946, #0d252e);
+    }
+
+    .skin-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.35;
+      background-image:
+        linear-gradient(rgba(142, 226, 245, 0.13) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(142, 226, 245, 0.13) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: linear-gradient(black, transparent 80%);
+    }
+
+    .skin-model-large {
+      position: relative;
+      width: 88px;
+      height: 185px;
+      transform: rotateY(-14deg);
+      filter: drop-shadow(0 18px 14px rgba(0, 0, 0, 0.28));
+    }
+
+    .skin-model-large .head,
+    .skin-model-large .body,
+    .skin-model-large .arm,
+    .skin-model-large .leg {
+      position: absolute;
+      border: 1px solid rgba(255, 255, 255, 0.21);
+      box-shadow: inset -10px 0 rgba(4, 29, 38, 0.18);
+    }
+
+    .skin-model-large .head {
+      top: 0;
+      left: 28px;
+      width: 33px;
+      height: 33px;
+      border-radius: 7px;
+      background:
+        linear-gradient(90deg, transparent 25%, #153744 25% 38%, transparent 38% 62%, #153744 62% 75%, transparent 75%),
+        linear-gradient(#6ed9ed, #51afe8);
+    }
+
+    .skin-model-large .body {
+      top: 34px;
+      left: 28px;
+      width: 33px;
+      height: 60px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #3188c0, #54c2e7);
+    }
+
+    .skin-model-large .body::after {
+      content: "";
+      position: absolute;
+      top: 14px;
+      left: 9px;
+      width: 15px;
+      height: 15px;
+      background: #ffd568;
+      clip-path: polygon(50% 0, 63% 36%, 100% 50%, 63% 64%, 50% 100%, 37% 64%, 0 50%, 37% 36%);
+    }
+
+    .skin-model-large .arm,
+    .skin-model-large .leg {
+      width: 14px;
+      border-radius: 4px;
+      background: linear-gradient(#61cfe9, #2d79b8);
+    }
+
+    .skin-model-large .arm.left {
+      top: 36px;
+      left: 13px;
+      height: 55px;
+      transform: rotate(5deg);
+    }
+
+    .skin-model-large .arm.right {
+      top: 36px;
+      right: 13px;
+      height: 55px;
+      transform: rotate(-5deg);
+    }
+
+    .skin-model-large .leg.left {
+      top: 94px;
+      left: 28px;
+      height: 72px;
+    }
+
+    .skin-model-large .leg.right {
+      top: 94px;
+      left: 47px;
+      height: 72px;
+    }
+
+    .skin-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .skin-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .skin-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      background: linear-gradient(145deg, #6ddbed, #3991df);
+    }
+
+    .skin-profile span {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .skin-profile strong {
+      font-size: 11px;
+    }
+
+    .skin-profile small {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 7.5px;
+    }
+
+    .skin-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .skin-tags span {
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: var(--cyan-deep);
+      background: var(--cyan-soft);
+      font-size: 7.5px;
+      font-weight: 650;
+    }
+
+    .skin-angles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .skin-angles span {
+      padding: 5px;
+      border-radius: 7px;
+      color: var(--muted);
+      font-size: 7px;
+      text-align: center;
+    }
+
+    .skin-angles span:first-child {
+      color: var(--cyan-deep);
+      background: var(--cyan-soft);
+    }
+
+    .loader-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+    }
+
+    .loader-card {
+      position: relative;
+      padding: 23px 21px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .loader-card::after {
+      content: "";
+      position: absolute;
+      right: -36px;
+      bottom: -36px;
+      width: 105px;
+      height: 105px;
+      border-radius: 50%;
+      background: var(--loader-color, rgba(39, 189, 232, 0.13));
+      filter: blur(2px);
+    }
+
+    .loader-logo {
+      display: grid;
+      width: 50px;
+      height: 50px;
+      place-items: center;
+      border-radius: 15px;
+      color: white;
+      background: var(--loader-fill, linear-gradient(145deg, #70dff2, #3998e8));
+      box-shadow: 0 8px 18px rgba(42, 138, 170, 0.16);
+      font-family: var(--display);
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+    }
+
+    .loader-card:nth-child(2) {
+      --loader-fill: linear-gradient(145deg, #ffbe63, #ee8e3a);
+      --loader-color: rgba(238, 142, 58, 0.14);
+    }
+
+    .loader-card:nth-child(3) {
+      --loader-fill: linear-gradient(145deg, #9adca8, #43bd78);
+      --loader-color: rgba(67, 189, 120, 0.14);
+    }
+
+    .loader-card:nth-child(4) {
+      --loader-fill: linear-gradient(145deg, #b6a8ee, #8066db);
+      --loader-color: rgba(128, 102, 219, 0.14);
+    }
+
+    .loader-card h3 {
+      margin: 17px 0 5px;
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .loader-card p {
+      min-height: 43px;
+      color: var(--ink-soft);
+      font-size: 10.5px;
+      line-height: 1.65;
+    }
+
+    .loader-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 15px;
+    }
+
+    .loader-badges span {
+      padding: 3px 7px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.55);
+      font-size: 7.5px;
+      font-weight: 650;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      counter-reset: steps;
+    }
+
+    .step {
+      position: relative;
+      padding: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.68);
+      box-shadow: var(--shadow-soft);
+      counter-increment: steps;
+    }
+
+    .step::before {
+      content: "0" counter(steps);
+      display: block;
+      margin-bottom: 24px;
+      color: rgba(29, 148, 181, 0.2);
+      font-family: var(--display);
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 1;
+    }
+
+    .step h3 {
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 780;
+    }
+
+    .step p {
+      margin-top: 8px;
+      color: var(--ink-soft);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .step-tag {
+      display: inline-flex;
+      margin-top: 17px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: var(--cyan-deep);
+      background: var(--cyan-soft);
+      font-size: 8px;
+      font-weight: 700;
+    }
+
+    .faq-wrap {
+      display: grid;
+      grid-template-columns: 0.7fr 1.3fr;
+      gap: 54px;
+      align-items: start;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .faq-item {
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 5px 16px rgba(35, 116, 144, 0.05);
+    }
+
+    .faq-item summary {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 17px 18px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 720;
+      list-style: none;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-item summary::after {
+      content: "+";
+      margin-left: auto;
+      color: var(--cyan-deep);
+      font-family: var(--mono);
+      font-size: 19px;
+      font-weight: 400;
+      transition: transform 0.2s ease;
+    }
+
+    .faq-item[open] summary::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-item p {
+      padding: 0 18px 18px 50px;
+      color: var(--ink-soft);
+      font-size: 11px;
+      line-height: 1.75;
+    }
+
+    .faq-number {
+      display: grid;
+      width: 21px;
+      height: 21px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 7px;
+      color: var(--cyan-deep);
+      background: var(--cyan-soft);
+      font-family: var(--mono);
+      font-size: 8px;
+    }
+
+    .cta-section {
+      padding: 30px 0 100px;
+    }
+
+    .cta-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      padding: clamp(30px, 5vw, 58px);
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      color: white;
+      background:
+        radial-gradient(circle at 82% 22%, rgba(95, 224, 247, 0.2), transparent 29%),
+        radial-gradient(circle at 7% 95%, rgba(255, 172, 75, 0.18), transparent 28%),
+        linear-gradient(135deg, #143844, #0d2730);
+      box-shadow: 0 30px 70px rgba(16, 57, 70, 0.25);
+    }
+
+    .cta-card::after {
+      content: "";
+      position: absolute;
+      right: -55px;
+      top: -80px;
+      width: 270px;
+      height: 270px;
+      border: 1px solid rgba(146, 232, 248, 0.13);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 38px rgba(146, 232, 248, 0.035),
+        0 0 0 78px rgba(146, 232, 248, 0.02);
+    }
+
+    .cta-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 590px;
+    }
+
+    .cta-copy .eyebrow {
+      color: #74dff3;
+    }
+
+    .cta-copy h2 {
+      margin: 11px 0 10px;
+      font-family: var(--display);
+      font-size: clamp(29px, 4vw, 45px);
+      font-weight: 840;
+      letter-spacing: -0.055em;
+      line-height: 1.1;
+    }
+
+    .cta-copy p {
+      color: rgba(220, 244, 250, 0.7);
+      font-size: 12px;
+    }
+
+    .cta-card .button {
+      position: relative;
+      z-index: 2;
+      min-height: 52px;
+      padding-inline: 23px;
+    }
+
+    .site-footer {
+      padding: 28px 0 36px;
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-brand .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+    }
+
+    .footer-brand .brand-mark svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .footer-brand strong {
+      font-family: var(--display);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .footer-brand span {
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      color: var(--ink-soft);
+      font-size: 10px;
+    }
+
+    .footer-links a:hover {
+      color: var(--cyan-deep);
+    }
+
+    .footer-legal {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.7;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 1040px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy {
+        max-width: 760px;
+      }
+
+      .hero-visual {
+        width: min(720px, 100%);
+        margin-inline: auto;
+      }
+
+      .floating-chip.skin {
+        right: -10px;
+      }
+
+      .floating-chip.safe {
+        left: -10px;
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .feature-card,
+      .feature-card.wide,
+      .features-grid > .feature-card:nth-child(n + 3) {
+        grid-column: span 1;
+      }
+
+      .loader-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .showcase-panel {
+        grid-template-columns: 0.88fr 1.12fr;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .wrap {
+        width: min(100% - 30px, 680px);
+      }
+
+      .site-header {
+        padding: 8px 0;
+      }
+
+      .header-shell {
+        position: relative;
+        min-height: 57px;
+      }
+
+      .menu-button {
+        display: block;
+        margin-left: auto;
+      }
+
+      .main-nav {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .main-nav.is-open {
+        display: flex;
+      }
+
+      .main-nav a {
+        padding: 11px 12px;
+      }
+
+      .header-actions {
+        margin-left: 0;
+      }
+
+      .header-actions .button {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 52px;
+      }
+
+      .hero h1 {
+        font-size: clamp(39px, 11vw, 63px);
+      }
+
+      .hero-stats {
+        flex-wrap: wrap;
+      }
+
+      .launcher-frame {
+        transform: none;
+      }
+
+      .showcase-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .showcase-stage {
+        min-height: 440px;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .faq-wrap {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .cta-card {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .wrap {
+        width: calc(100% - 24px);
+      }
+
+      .brand-copy small {
+        display: none;
+      }
+
+      .brand-copy strong {
+        font-size: 14px;
+      }
+
+      .hero {
+        padding: 42px 0 74px;
+      }
+
+      .hero h1 {
+        overflow-wrap: anywhere;
+      }
+
+      .hero h1 .accent {
+        display: inline;
+      }
+
+      .hero-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .hero-actions .button {
+        width: 100%;
+      }
+
+      .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .hero-stat {
+        min-width: 0;
+        padding: 10px;
+      }
+
+      .hero-stat strong {
+        font-size: 15px;
+      }
+
+      .launcher-body {
+        grid-template-columns: 1fr;
+      }
+
+      .mock-sidebar {
+        display: none;
+      }
+
+      .mock-main {
+        padding: 13px;
+      }
+
+      .mock-launch-card {
+        min-height: 175px;
+      }
+
+      .mock-launch-copy {
+        max-width: 68%;
+      }
+
+      .floating-chip {
+        display: none;
+      }
+
+      .release-inner {
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .release-inner p {
+        flex-basis: 100%;
+        order: 3;
+      }
+
+      .section {
+        padding: 74px 0;
+      }
+
+      .features-grid,
+      .loader-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card {
+        min-height: auto;
+      }
+
+      .skin-demo {
+        display: none;
+      }
+
+      .showcase-stage {
+        min-height: 420px;
+        padding: 15px;
+      }
+
+      .panel-card {
+        min-height: 390px;
+        padding: 15px;
+      }
+
+      .catalog-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .skin-panel-body {
+        grid-template-columns: 1fr;
+      }
+
+      .skin-stage {
+        min-height: 235px;
+      }
+
+      .skin-model-large {
+        transform: scale(0.86) rotateY(-14deg);
+      }
+
+      .footer-main {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+    <symbol id="cat-mark" viewBox="0 0 64 64">
+      <path fill="#eafcff" d="M12 20 17 8l11 8h8l11-8 5 12v21c0 10-8 16-20 16S12 51 12 41V20Z"/>
+      <path fill="#173844" d="M20 29h6v6h-6zm18 0h6v6h-6z"/>
+      <path fill="#ffb457" d="m28 40 4 3 4-3-4 8-4-8Z"/>
+      <path fill="#7ce5f8" d="M15 18h4l-3 8-4-5zm30 0h4l3 3-4 5-3-8Z"/>
+    </symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24">
+      <path d="M12 3v11m0 0 4-4m-4 4-4-4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24">
+      <path d="M5 12h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24">
+      <path d="m5 12 4.2 4.2L19 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24">
+      <path d="M12 3 5 6v5c0 4.6 2.9 8.1 7 10 4.1-1.9 7-5.4 7-10V6l-7-3Z" fill="none" stroke="currentColor" stroke-width="1.7"/>
+      <path d="m9 12 2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-layers" viewBox="0 0 24 24">
+      <path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-package" viewBox="0 0 24 24">
+      <path d="m4 7 8-4 8 4v10l-8 4-8-4V7Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      <path d="m4 7 8 4 8-4m-8 4v10M8 5l8 4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-spark" viewBox="0 0 24 24">
+      <path d="m12 2 2.1 6.1L20 10l-5.9 1.9L12 18l-2.1-6.1L4 10l5.9-1.9L12 2Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      <path d="m18.5 16 .8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="icon-java" viewBox="0 0 24 24">
+      <path d="M9 17c-4 1.4 2.2 3.3 6.5 2.2 2.3-.6 3.4-1.5 3.4-1.5M8 14c-2.7.9 2.1 2.8 5.4 2 1.8-.4 3-.9 3-.9M12 3c2.4 2.9-4.1 4.1-1.2 7.4-1.8-.9-3.2-2.1-2.3-3.8C9.3 5.2 12 4.3 12 3Zm-2.3 13c1.3 1.4 2.1 2.6 1.4 4.1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M15.2 4.5c1.9 2.7-1.7 3.8-.3 5.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-globe" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M3 12h18M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3Z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    </symbol>
+    <symbol id="icon-grid" viewBox="0 0 24 24">
+      <rect x="3" y="3" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <rect x="14" y="3" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <rect x="3" y="14" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <rect x="14" y="14" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    </symbol>
+    <symbol id="icon-user" viewBox="0 0 24 24">
+      <circle cx="12" cy="8" r="3.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+      <path d="M5 20c.5-4 3-6 7-6s6.5 2 7 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-windows" viewBox="0 0 24 24">
+      <path d="M3 5.5 10.5 4v7H3V5.5Zm9-1.7L21 2.3V11h-9V3.8ZM3 12.8h7.5v7L3 18.3v-5.5Zm9 0h9v8.5l-9-1.5v-7Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="icon-target" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+    </symbol>
+  </svg>
+
+  <header class="site-header" id="top">
+    <div class="wrap header-shell">
+      <a class="brand" href="#top" aria-label="NeoCatCraftLauncher 首页">
+        <span class="brand-mark"><svg aria-hidden="true"><use href="#cat-mark"/></svg></span>
+        <span class="brand-copy">
+          <strong>NeoCatCraft</strong>
+          <small>LAUNCHER</small>
+        </span>
+      </a>
+      <nav class="main-nav" id="main-nav" aria-label="主导航">
+        <a href="#features">功能特色</a>
+        <a href="#experience">界面预览</a>
+        <a href="#loaders">加载器</a>
+        <a href="#guide">使用指南</a>
+        <a href="#faq">常见问题</a>
+      </nav>
+      <div class="header-actions">
+        <a class="button button--primary header-download" href="./release/NeoCatCraftLauncher-Setup-0.2.2-x64.exe" download>
+          <svg aria-hidden="true"><use href="#icon-download"/></svg>
+          免费下载
+        </a>
+      </div>
+      <button class="menu-button" id="menu-button" aria-label="打开导航菜单" aria-controls="main-nav" aria-expanded="false">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy reveal">
+          <div class="status-pill">
+            <i></i>
+            <span>v0.2.2 正式发布</span>
+            <b>Windows 10 / 11 · x64</b>
+          </div>
+          <h1>把方块世界，<br>装进一只<span class="accent">猫的启动器</span>。</h1>
+          <p class="hero-lead">
+            轻快、清晰、不折腾。NeoCatCraftLauncher 把游戏版本、模组、整合包、Java 和正版账户整理进同一个舒服的空间。
+          </p>
+          <div class="hero-actions">
+            <a class="button button--primary" href="./release/NeoCatCraftLauncher-Setup-0.2.2-x64.exe" download>
+              <svg aria-hidden="true"><use href="#icon-windows"/></svg>
+              下载 Windows 版
+              <svg aria-hidden="true"><use href="#icon-arrow"/></svg>
+            </a>
+            <a class="button button--ghost" href="#features">
+              看看它能做什么
+            </a>
+          </div>
+          <div class="download-note">
+            <span><svg aria-hidden="true"><use href="#icon-check"/></svg>安装包约 116 MB</span>
+            <span><svg aria-hidden="true"><use href="#icon-check"/></svg>无需注册启动器账户</span>
+            <span><svg aria-hidden="true"><use href="#icon-check"/></svg>Minecraft 账户独立登录</span>
+          </div>
+          <div class="hero-stats" aria-label="产品特点">
+            <div class="hero-stat"><strong>4</strong><span>种模组加载器</span></div>
+            <div class="hero-stat"><strong>双平台</strong><span>模组内容搜索</span></div>
+            <div class="hero-stat"><strong>3D</strong><span>正版皮肤预览</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <span class="visual-halo" aria-hidden="true"></span>
+          <div class="launcher-frame" aria-label="NeoCatCraftLauncher 界面预览">
+            <div class="window-bar">
+              <span class="mini-logo">NC</span>
+              <span class="window-name"><strong>NeoCatCraft</strong><small>LAUNCHER</small></span>
+              <span class="window-dots"><i></i><i></i><i></i></span>
+            </div>
+            <div class="launcher-body">
+              <aside class="mock-sidebar">
+                <div class="mock-player">
+                  <span class="mock-avatar"><svg aria-hidden="true"><use href="#cat-mark"/></svg></span>
+                  <span class="mock-player-copy"><strong>Notch</strong><small>● 微软正版</small></span>
+                </div>
+                <div class="mock-section-title"><span>我的世界</span><i></i></div>
+                <div class="mock-instance active">
+                  <span class="mock-instance-icon"><svg aria-hidden="true"><use href="#icon-grid"/></svg></span>
+                  <span class="mock-instance-copy"><strong>1.21.4 Fabric</strong><small>Fabric 0.16.9</small></span>
+                </div>
+                <div class="mock-instance">
+                  <span class="mock-instance-icon"><svg aria-hidden="true"><use href="#icon-layers"/></svg></span>
+                  <span class="mock-instance-copy"><strong>1.20.1 Forge</strong><small>Forge 47.4.0</small></span>
+                </div>
+                <div class="mock-instance">
+                  <span class="mock-instance-icon"><svg aria-hidden="true"><use href="#icon-target"/></svg></span>
+                  <span class="mock-instance-copy"><strong>生存冒险</strong><small>1.21.1 NeoForge</small></span>
+                </div>
+                <div class="mock-add">＋ 新建实例</div>
+                <div class="mock-nav">
+                  <span><b>↓</b>下载中心</span>
+                  <span><b>⚙</b>启动器设置</span>
+                </div>
+              </aside>
+              <div class="mock-main">
+                <div class="mock-main-head">
+                  <span class="mock-instance-badge"><svg aria-hidden="true"><use href="#icon-grid"/></svg></span>
+                  <span class="mock-main-title"><small>CURRENT INSTANCE</small><strong>我的方块小屋</strong></span>
+                  <span>隔离实例</span>
+                </div>
+                <div class="mock-launch-card">
+                  <span class="pixel-art" aria-hidden="true">
+                    <i class="pixel-cloud one"></i>
+                    <i class="pixel-cloud two"></i>
+                    <i class="pixel-hill"></i>
+                    <i class="pixel-grass"></i>
+                  </span>
+                  <div class="mock-launch-copy">
+                    <small>READY TO EXPLORE</small>
+                    <h3>欢迎回来，冒险家</h3>
+                    <p>Minecraft 1.21.4 · Fabric 0.16.9</p>
+                    <div class="mock-chips"><span>42 个模组</span><span>Java 21</span><span>正版账户</span></div>
+                  </div>
+                  <span class="mock-play"><i>▶</i><span><strong>启动游戏</strong><small>准备就绪</small></span></span>
+                </div>
+                <div class="mock-stats">
+                  <div class="mock-stat"><small>PLAYTIME</small><strong>126 h</strong><p>累计游玩时间</p></div>
+                  <div class="mock-stat"><small>MODS</small><strong>42</strong><p>39 个已启用</p></div>
+                  <div class="mock-stat"><small>MEMORY</small><strong>4 GB</strong><p>自动分配</p></div>
+                </div>
+                <div class="mock-recent">
+                  <div class="mock-recent-head"><span>最近安装</span><span>管理模组 →</span></div>
+                  <div class="mock-mod-row">
+                    <i class="mock-mod-icon"></i>
+                    <span><strong>Sodium</strong><small>渲染优化 · 已启用</small></span>
+                    <em>启用</em>
+                  </div>
+                  <div class="mock-mod-row">
+                    <i class="mock-mod-icon orange"></i>
+                    <span><strong>Just Enough Items</strong><small>物品配方 · 已启用</small></span>
+                    <em>启用</em>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="floating-chip skin">
+            <svg aria-hidden="true"><use href="#icon-user"/></svg>
+            <div><strong>正版皮肤预览</strong><small>拖动查看 3D 模型</small></div>
+          </div>
+          <div class="floating-chip safe">
+            <svg aria-hidden="true"><use href="#icon-shield"/></svg>
+            <div><strong>账户信息本地保存</strong><small>不上传启动器服务器</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="release-strip">
+      <div class="wrap release-inner">
+        <span class="release-tag"><i></i>LATEST RELEASE</span>
+        <p><strong>NeoCatCraftLauncher 0.2.2</strong> · 新增正版皮肤预览，加载器支持官网 JAR 自动下载与本地安装。</p>
+        <a href="./release/NeoCatCraftLauncher-Setup-0.2.2-x64.exe" download>获取安装包 →</a>
+      </div>
+    </div>
+
+    <section class="section" id="features">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <span class="eyebrow">Built for the block world</span>
+          <h2>每个细节，都为少一点折腾。</h2>
+          <p>从创建实例到安装第一个模组，常用能力都在顺手的位置。需要时足够专业，日常使用又保持简单。</p>
+        </div>
+
+        <div class="features-grid">
+          <article class="feature-card wide accent-card reveal">
+            <span class="feature-icon"><svg aria-hidden="true"><use href="#icon-user"/></svg></span>
+            <h3>正版账户与 3D 皮肤预览</h3>
+            <p>使用 Microsoft 设备代码安全登录，自动读取 Mojang 皮肤资料。支持 Classic / Slim 模型、内外皮肤层与多角度旋转查看。</p>
+            <div class="feature-tags"><span>Microsoft OAuth</span><span>皮肤实时刷新</span><span>离线回退</span></div>
+            <div class="skin-demo" aria-hidden="true">
+              <i class="head"></i><i class="body"></i>
+              <i class="arm left"></i><i class="arm right"></i>
+              <i class="leg left"></i><i class="leg right"></i>
+            </div>
+          </article>
+
+          <article class="feature-card wide reveal">
+            <span class="feature-icon green"><svg aria-hidden="true"><use href="#icon-package"/></svg></span>
+            <h3>加载器，两种下载方式</h3>
+            <p>创建实例时自动从 Forge、NeoForge、Fabric 或 Quilt 官网下载安装器；网络不便时也可直接选择提前下载好的 JAR。</p>
+            <div class="feature-tags"><span>官网自动下载</span><span>本地 JAR</span><span>安装包校验</span><span>修复复用</span></div>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon"><svg aria-hidden="true"><use href="#icon-layers"/></svg></span>
+            <h3>多实例独立管理</h3>
+            <p>版本、模组、存档、配置与 Java 设置各自隔离，一个实例玩整合包，另一个保持原版。</p>
+            <div class="feature-tags"><span>独立目录</span><span>快速复制</span></div>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon orange"><svg aria-hidden="true"><use href="#icon-spark"/></svg></span>
+            <h3>内容搜索与安装</h3>
+            <p>聚合 Modrinth 和 CurseForge，按游戏版本、加载器筛选，并提示必需或可选前置模组。</p>
+            <div class="feature-tags"><span>Modrinth</span><span>CurseForge</span><span>依赖提示</span></div>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon"><svg aria-hidden="true"><use href="#icon-java"/></svg></span>
+            <h3>Java 自动就绪</h3>
+            <p>根据 Minecraft 版本匹配所需 Java，可按需下载 Zulu 运行时，也允许手动指定已有 Java。</p>
+            <div class="feature-tags"><span>自动匹配</span><span>Zulu JRE</span></div>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon green"><svg aria-hidden="true"><use href="#icon-globe"/></svg></span>
+            <h3>下载镜像与任务进度</h3>
+            <p>可选 BMCLAPI 加速游戏文件下载，任务进度、日志和失败原因集中显示，失败时自动回退。</p>
+            <div class="feature-tags"><span>BMCLAPI</span><span>下载重试</span><span>实时日志</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section showcase" id="experience">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <span class="eyebrow">A calmer launcher</span>
+          <h2>常用能力，一眼就能找到。</h2>
+          <p>不是把设置堆满整个屏幕，而是把下一步要做的事情放在最自然的位置。</p>
+        </div>
+
+        <div class="showcase-panel reveal">
+          <div class="showcase-copy">
+            <span class="eyebrow">Designed in motion</span>
+            <h2>属于自己的方块空间。</h2>
+            <p>点击切换，看看启动器里的三块核心体验。</p>
+            <div class="showcase-tabs" role="tablist" aria-label="界面功能预览">
+              <button class="showcase-tab active" role="tab" aria-selected="true" aria-controls="panel-discovery" data-panel="discovery">
+                <i>⌕</i>
+                <span><strong>发现内容</strong><small>搜索并安装模组与整合包</small></span>
+              </button>
+              <button class="showcase-tab" role="tab" aria-selected="false" aria-controls="panel-instance" data-panel="instance">
+                <i>▦</i>
+                <span><strong>管理实例</strong><small>版本、加载器与运行环境</small></span>
+              </button>
+              <button class="showcase-tab" role="tab" aria-selected="false" aria-controls="panel-skin" data-panel="skin">
+                <i>◇</i>
+                <span><strong>预览皮肤</strong><small>登录正版后查看自己的角色</small></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="showcase-stage">
+            <article class="panel-card active" id="panel-discovery" role="tabpanel">
+              <div class="panel-top">
+                <span class="panel-top-icon"><svg aria-hidden="true"><use href="#icon-spark"/></svg></span>
+                <div><strong>模组发现</strong><small>自动匹配当前实例的版本与加载器</small></div>
+              </div>
+              <div class="panel-search"><i></i>搜索优化、地图、科技或冒险模组…</div>
+              <div class="catalog-grid">
+                <div class="catalog-item">
+                  <span class="catalog-icon"></span>
+                  <span class="catalog-copy"><strong>Sodium</strong><small>渲染优化 · 12.4M 下载</small><span>安装</span></span>
+                </div>
+                <div class="catalog-item">
+                  <span class="catalog-icon orange"></span>
+                  <span class="catalog-copy"><strong>JEI</strong><small>物品配方 · 4.7M 下载</small><span>安装</span></span>
+                </div>
+                <div class="catalog-item">
+                  <span class="catalog-icon purple"></span>
+                  <span class="catalog-copy"><strong>Iris Shaders</strong><small>光影支持 · 8.1M 下载</small><span>安装</span></span>
+                </div>
+                <div class="catalog-item">
+                  <span class="catalog-icon green"></span>
+                  <span class="catalog-copy"><strong>Xaero's Minimap</strong><small>小地图 · 3.2M 下载</small><span>安装</span></span>
+                </div>
+              </div>
+              <div class="catalog-grid">
+                <div class="catalog-item">
+                  <span class="catalog-icon orange"></span>
+                  <span class="catalog-copy"><strong>Create</strong><small>机械与自动化 · 1.9M 下载</small><span>安装</span></span>
+                </div>
+                <div class="catalog-item">
+                  <span class="catalog-icon"></span>
+                  <span class="catalog-copy"><strong>Fabric API</strong><small>基础前置 · 已安装</small><span>已启用</span></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel-card" id="panel-instance" role="tabpanel" hidden>
+              <div class="panel-top">
+                <span class="panel-top-icon"><svg aria-hidden="true"><use href="#icon-layers"/></svg></span>
+                <div><strong>实例概览</strong><small>每个世界都有自己的版本与模组组合</small></div>
+              </div>
+              <div class="panel-search"><i></i>搜索实例…</div>
+              <div class="version-list">
+                <div class="version-row">
+                  <i></i>
+                  <span class="version-copy"><strong>我的方块小屋</strong><small>Minecraft 1.21.4 · Fabric 0.16.9 · 42 个模组</small></span>
+                  <button>启动</button>
+                </div>
+                <div class="version-row">
+                  <i></i>
+                  <span class="version-copy"><strong>旧世界回忆</strong><small>Minecraft 1.20.1 · Forge 47.4.0 · 18 个模组</small></span>
+                  <button>启动</button>
+                </div>
+                <div class="version-row">
+                  <i></i>
+                  <span class="version-copy"><strong>原版生存</strong><small>Minecraft 1.21.5 · 原版 · Java 21</small></span>
+                  <button>启动</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel-card" id="panel-skin" role="tabpanel" hidden>
+              <div class="panel-top">
+                <span class="panel-top-icon"><svg aria-hidden="true"><use href="#icon-user"/></svg></span>
+                <div><strong>正版皮肤预览</strong><small>直接读取 Mojang 账户纹理</small></div>
+              </div>
+              <div class="skin-panel-body">
+                <div class="skin-stage">
+                  <div class="skin-model-large" aria-label="Minecraft 皮肤模型">
+                    <i class="head"></i><i class="body"></i>
+                    <i class="arm left"></i><i class="arm right"></i>
+                    <i class="leg left"></i><i class="leg right"></i>
+                  </div>
+                </div>
+                <div class="skin-details">
+                  <div class="skin-profile">
+                    <span class="skin-avatar"></span>
+                    <span><strong>Player_Neo</strong><small>Microsoft 正版账户</small></span>
+                  </div>
+                  <div class="skin-tags"><span>正版账户</span><span>Classic</span><span>皮肤已同步</span></div>
+                  <div class="skin-angles"><span>正面</span><span>侧面</span><span>背面</span></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="loaders">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <span class="eyebrow">Pick your loader</span>
+          <h2>主流加载器，一站装好。</h2>
+          <p>版本列表直接从官方元数据读取。安装器可以自动下载，也可以使用你已经从官网保存到本地的 JAR。</p>
+        </div>
+        <div class="loader-grid">
+          <article class="loader-card reveal">
+            <span class="loader-logo">F</span>
+            <h3>Forge</h3>
+            <p>生态成熟，模组覆盖面广，适合大型整合包与经典科技冒险。</p>
+            <div class="loader-badges"><span>官网自动下载</span><span>本地 JAR</span></div>
+          </article>
+          <article class="loader-card reveal">
+            <span class="loader-logo">N</span>
+            <h3>NeoForge</h3>
+            <p>面向现代 Minecraft 的活跃分支，持续跟进新版本与性能改进。</p>
+            <div class="loader-badges"><span>官网自动下载</span><span>本地 JAR</span></div>
+          </article>
+          <article class="loader-card reveal">
+            <span class="loader-logo">Fa</span>
+            <h3>Fabric</h3>
+            <p>轻量、启动快，适合优化模组、光影以及现代小型玩法扩展。</p>
+            <div class="loader-badges"><span>官网自动下载</span><span>本地 JAR</span></div>
+          </article>
+          <article class="loader-card reveal">
+            <span class="loader-logo">Q</span>
+            <h3>Quilt</h3>
+            <p>灵活的模块化加载器，为兼容 Fabric 生态的现代实例提供另一种选择。</p>
+            <div class="loader-badges"><span>官网自动下载</span><span>本地 JAR</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="guide">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <span class="eyebrow">Three small steps</span>
+          <h2>下载之后，几步开始。</h2>
+          <p>第一次使用也能顺着界面完成。之后每次回来，只需要按一下启动。</p>
+        </div>
+        <div class="steps">
+          <article class="step reveal">
+            <h3>下载并安装</h3>
+            <p>获取 Windows 安装包，完成安装后打开 NeoCatCraftLauncher。</p>
+            <span class="step-tag">Windows 10 / 11 · x64</span>
+          </article>
+          <article class="step reveal">
+            <h3>创建游戏实例</h3>
+            <p>选择 Minecraft 版本与加载器。需要的 Java 和加载器 JAR 可以由启动器自动准备。</p>
+            <span class="step-tag">原版 / Forge / NeoForge / Fabric / Quilt</span>
+          </article>
+          <article class="step reveal">
+            <h3>登录并开始</h3>
+            <p>使用 Microsoft 正版账户登录，预览皮肤，安装喜欢的模组，然后进入世界。</p>
+            <span class="step-tag">设备代码登录 · 无需粘贴回调地址</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="wrap faq-wrap">
+        <div class="section-heading reveal">
+          <span class="eyebrow">Before you start</span>
+          <h2>常见问题。</h2>
+          <p>还有疑问？先看看这里。启动器里也保留了清晰的账户、Java 与下载状态提示。</p>
+        </div>
+        <div class="faq-list reveal">
+          <details class="faq-item" open>
+            <summary><span class="faq-number">01</span>启动器是免费的吗？</summary>
+            <p>NeoCatCraftLauncher 本身免费。Minecraft 游戏与 Microsoft 账户需要遵守各自的授权规则；启动器不提供游戏或账户售卖服务。</p>
+          </details>
+          <details class="faq-item">
+            <summary><span class="faq-number">02</span>使用正版账户登录安全吗？</summary>
+            <p>登录采用 Microsoft 官方设备代码流程，你会在浏览器中完成确认。启动器只在本地保存必要的账户令牌，用于后续验证和启动游戏。</p>
+          </details>
+          <details class="faq-item">
+            <summary><span class="faq-number">03</span>可以自动下载模组加载器吗？</summary>
+            <p>可以。按所选 Minecraft 与加载器版本，会自动从 Forge、NeoForge、Fabric 或 Quilt 的官方文件源下载安装器 JAR。你也可以改用提前下载的本地官方 JAR。</p>
+          </details>
+          <details class="faq-item">
+            <summary><span class="faq-number">04</span>一定要单独安装 Java 吗？</summary>
+            <p>不一定。启动器可以根据 Minecraft 版本检查所需的 Java 主版本，并按需下载 Zulu 运行时；已有兼容 Java 时也可以手动指定。</p>
+          </details>
+          <details class="faq-item">
+            <summary><span class="faq-number">05</span>支持哪些模组下载平台？</summary>
+            <p>目前整合 Modrinth 与 CurseForge 的搜索与版本信息，可以按 Minecraft 版本和模组加载器筛选，并在下载前提示前置依赖。</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="wrap">
+        <div class="cta-card reveal">
+          <div class="cta-copy">
+            <span class="eyebrow">Ready for a new world?</span>
+            <h2>下一次冒险，从一个安静的启动器开始。</h2>
+            <p>下载 NeoCatCraftLauncher，把版本、模组和正版账户准备好。</p>
+          </div>
+          <a class="button button--primary" href="./release/NeoCatCraftLauncher-Setup-0.2.2-x64.exe" download>
+            <svg aria-hidden="true"><use href="#icon-windows"/></svg>
+            免费下载 x64 版
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <span class="brand-mark"><svg aria-hidden="true"><use href="#cat-mark"/></svg></span>
+          <span><strong>NeoCatCraftLauncher</strong><br><span>Minecraft, made a little cozier.</span></span>
+        </div>
+        <nav class="footer-links" aria-label="页脚导航">
+          <a href="#features">功能</a>
+          <a href="#loaders">加载器</a>
+          <a href="#guide">使用指南</a>
+          <a href="#faq">常见问题</a>
+          <a href="#top">回到顶部</a>
+        </nav>
+      </div>
+      <p class="footer-legal">
+        © <span id="year">2026</span> NeoCatCraft. NeoCatCraftLauncher 是非官方 Minecraft 启动器，与 Mojang Studios、Microsoft 没有隶属关系。Minecraft 是 Mojang Studios 的商标。第三方模组与整合包版权归各自作者所有。
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const header = document.querySelector('.site-header')
+      const menuButton = document.getElementById('menu-button')
+      const nav = document.getElementById('main-nav')
+
+      const syncHeader = () => {
+        header.classList.toggle('is-scrolled', window.scrollY > 12)
+      }
+      syncHeader()
+      window.addEventListener('scroll', syncHeader, { passive: true })
+
+      menuButton.addEventListener('click', () => {
+        const open = nav.classList.toggle('is-open')
+        menuButton.setAttribute('aria-expanded', String(open))
+      })
+      nav.addEventListener('click', (event) => {
+        if (event.target.closest('a')) {
+          nav.classList.remove('is-open')
+          menuButton.setAttribute('aria-expanded', 'false')
+        }
+      })
+
+      const tabs = [...document.querySelectorAll('.showcase-tab')]
+      const panels = [...document.querySelectorAll('.panel-card')]
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabs.forEach((item) => {
+            const active = item === tab
+            item.classList.toggle('active', active)
+            item.setAttribute('aria-selected', String(active))
+          })
+          panels.forEach((panel) => {
+            const active = panel.id === `panel-${tab.dataset.panel}`
+            panel.classList.toggle('active', active)
+            panel.hidden = !active
+          })
+        })
+      })
+
+      const revealItems = document.querySelectorAll('.reveal')
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible')
+              observer.unobserve(entry.target)
+            }
+          })
+        }, { threshold: 0.08 })
+        revealItems.forEach((item) => observer.observe(item))
+      } else {
+        revealItems.forEach((item) => item.classList.add('is-visible'))
+      }
+
+      document.getElementById('year').textContent = new Date().getFullYear()
+    })()
+  </script>
+</body>
+</html>

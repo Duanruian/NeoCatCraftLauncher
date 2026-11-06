@@ -1,0 +1,51 @@
+{
+  "name": "neo-cat-craft-launcher",
+  "productName": "NeoCatCraftLauncher",
+  "version": "0.2.2",
+  "private": true,
+  "description": "NeoCatCraftLauncher - a Minecraft launcher built on minecraft-launcher-lib (Electron + FastAPI sidecar)",
+  "author": "NeoCatCraft",
+  "license": "MIT",
+  "main": "electron/main.js",
+  "scripts": {
+    "frontend:build": "vite build --config frontend-vue/vite.config.mjs",
+    "frontend:dev": "vite --config frontend-vue/vite.config.mjs",
+    "start": "npm run frontend:build && electron .",
+    "dev": "npm run frontend:build && electron . --dev",
+    "setup": "powershell -ExecutionPolicy Bypass -File scripts/setup-backend.ps1",
+    "backend": "powershell -ExecutionPolicy Bypass -File scripts/run-backend.ps1",
+    "backend:test": ".runtime\\python\\python.exe -m unittest discover -s backend\\tests -t backend -v",
+    "dist": "npm run frontend:build && powershell -ExecutionPolicy Bypass -File scripts/build-windows.ps1"
+  },
+  "build": {
+    "appId": "com.neocatcraft.launcher",
+    "productName": "NeoCatCraftLauncher",
+    "asar": false,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**/*",
+      "frontend/dist/**/*",
+      "backend/**/*",
+      ".runtime/python/**/*",
+      "icon.jpg",
+      "package.json"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    }
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.10",
+    "electron": "^45.0.0",
+    "vite": "^7.3.7"
+  },
+  "dependencies": {
+    "vue": "^3.5.44"
+  }
+}
